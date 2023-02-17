@@ -1,0 +1,54 @@
+@media all and (min-width: 998px) {
+    
+.select {
+    flex-direction: row;
+    max-width: 800px;
+    @include e(container) {
+    }
+    @include e(email) {
+    }
+    @include e(button) {
+        cursor: pointer;
+        @include m(add) {
+            &:hover {
+                background-color: #F6EDD9;
+                color: #447350;
+                box-shadow:  0 0 2em 0.5em #F6EDD9;
+            }
+        }
+        @include m(change) {
+            &:hover {
+                background-color: #20C467;
+                color: #F6EDD9;
+                box-shadow:  0 0 2em 0.5em #20C467;
+            }
+        }
+        @include m(submit) {
+            &:hover {
+                background-color: #9999CC;
+                border-color: #9999CC;
+                color: #F6EDD9;
+                box-shadow:  0 0 2em 0.5em #9999CC;
+            }
+        }
+    }
+    @include e(image) {
+    }
+    @include e(after) {
+
+    }
+    @include e(form) {
+        
+    }
+    @include e(select) {
+        
+    }
+   
+}
+.is-hidden {
+display: none;
+}
+
+
+
+}

@@ -1,0 +1,18 @@
+@media all and (min-width: 768px) {
+    .select {
+        max-width: 600px;
+        height: 100%;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        @include e(container) {
+            margin: 0 auto;
+        }
+        & div:last-child {
+            margin: 0 auto;
+        }
+        @include e(form) {
+            max-width: 600px;
+        }
+    }
+
+}
