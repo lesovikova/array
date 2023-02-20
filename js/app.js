@@ -19,13 +19,10 @@ const getImage = () => document.querySelector('.select__image');
 
 //Creating first picture
 function readyPic (link) {
-    console.log(data);
     const image = document.createElement('img');
     image.classList.add('select__image');
-    console.log(image);
     image.src = link;
     // image.src = fetchImage();
-    console.log(image.src);
     container.prepend(image);
 
 }
@@ -33,21 +30,19 @@ function readyPic (link) {
 async function fetchJSON (callback) {    
     let response = await fetch(url);    
     data = await response.json();
-    console.log(data);
     let link = await data.urls.regular;
     callback (link);
-    console.log(link);
     return link;
 }
+
+//Calling the first picture making function
 fetchJSON(readyPic);
 
 
 //callback function for the changing of the picture
 function reachImage(link) {
     const image = getImage();
-    console.log(image);
     image.src = link;
-    console.log(image);
 }
 
 //changing url on click
@@ -121,7 +116,6 @@ form.addEventListener('submit', function (e) {
         alertsPlace.textContent = 'Click Add button to add your pictures below';
         emailValue();
         getEmails(checkRepeatedEmail);
-        // checkRepeatedEmail();
         addEmailOption();
         createBox();
         e.target.reset();
@@ -129,7 +123,24 @@ form.addEventListener('submit', function (e) {
 });
 
 
+//adding emails to the list of emails
+function addEmailOption () {
+    let emailOption = document.createElement('option');
+    emailOption.textContent = emailValue();
+    emailOption.value = emailValue();
+    emailOption.setAttribute('selected', 'true');
+    emailsSelect.add(emailOption);
+    
+   
+        let collArr = new Object();
+        console.log((collArr));
+        collArr.email = emailValue();
+        collectionArray.push(collArr);
+        
+}
 
+
+//collecting emails from emails select
 function getEmails(callback) {
     let collection = emailsSelect.selectedOptions;
     console.log(collection.length);
@@ -167,37 +178,43 @@ function checkRepeatedEmail(collection) {
        
             if (collection[i].label === emailValue()) {
                 document.querySelector('span').textContent = "This email already exists";
-            break;
+             e.preventDefault();
+             break; 
         }
-            
-        // e.preventDefault();
     }
 // }
 }
 
 
+//Adding elements after clicking add button
+addButton.addEventListener('click', () => {
+
+    getEmailAndLink();
+});
+
+
+
 //Array for storying collections of images
 let collectionArray = [];
 
-//finding value of selected option and get link
+//finding value of selected option and get link, identify the collection box
 function getEmailAndLink() {
     let collection = emailsSelect.selectedOptions;
-    console.log(collection.length);
 if (collection.length === 0) {
        const error = document.querySelector('span');
     error.textContent = "Please select at least one email";
       }
       else {
     for (let i = 0; i < collection.length; i++) {
-        let collArr = new Object();
-        collArr.email = collection[i].label;
+        console.log(collection[i].label);
+        const label = collection[i].label;
         const image = getImage();
-        collArr.link = image.src;
-        // collectionArray.push(collection[i].label);
-        collectionArray.push(collArr);
+        const imageLink = image.src;
+        let emailBox = document.querySelector(`[data-email = '${label}']`);
+        console.log(emailBox);
+        console.log(emailBox.nextElementSibling);
+        createImages(imageLink, emailBox);
     }
-    
-    return collectionArray;
   }
 }
 
@@ -209,30 +226,17 @@ function checkLinks () {
 }
 
 
-
-//Adding elements after clicking add button
-addButton.addEventListener('click', () => {
-    getEmailAndLink();
-});
-
-
-function createImages (link) {
+//adding images to the boxes
+function createImages (link, tag) {
     const image = document.createElement('img');
+    image.src = link;
     image.classList.add('assign__image');
-    const container = document.querySelector('.assign__images');
+    const container = tag.nextElementSibling;
     container.prepend(image);
 }
 
-createImages();
 
-//adding emails to the list of emails
-function addEmailOption () {
-    let emailOption = document.createElement('option');
-    emailOption.textContent = emailValue();
-    emailOption.value = emailValue();
-    emailOption.setAttribute('selected', 'true');
-    emailsSelect.add(emailOption);
-}
+
 
 //creating the section for displaying of images and email
 function createBox () {
