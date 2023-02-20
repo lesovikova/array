@@ -190,9 +190,20 @@ function checkRepeatedEmail(collection) {
 addButton.addEventListener('click', () => {
 
     getEmailAndLink();
+    addLinks();
+    fetchJSON(reachImage);
 });
 
+//fucntion for validation images for the repeat
+function repeatValidation () {
+   const imageLink = getImage().src;
+   console.log(imageLink);
+   console.log(collectionArray);
+   for(key of collectionArray) {
+    console.log(key[i].value); 
+   }
 
+}
 
 //Array for storying collections of images
 let collectionArray = [];
@@ -218,11 +229,18 @@ if (collection.length === 0) {
   }
 }
 
-
-
-//checking for the existing images
-function checkLinks () {
-
+//adding links to the objects in the array
+function addLinks () {
+    const imageLink = getImage().src;
+    let collection = emailsSelect.selectedOptions;
+    for (let i = 0; i < collection.length; i++) {
+    const searchItem = collection[i].label;
+    console.log(searchItem);
+    let emailArray = collectionArray.find( collectionArray => collectionArray.email === searchItem);
+    console.log(Object.keys(emailArray).length);
+    console.log(emailArray);
+    emailArray[Object.keys(emailArray).length] = imageLink;
+    }
 }
 
 
