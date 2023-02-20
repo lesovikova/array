@@ -188,10 +188,12 @@ function checkRepeatedEmail(collection) {
 
 //Adding elements after clicking add button
 addButton.addEventListener('click', () => {
+    document.querySelector('span').textContent = "";
 
-    getEmailAndLink();
-    addLinks();
+    getEmailAndLink(searchLinks());
+    addLinks(searchLinks());
     fetchJSON(reachImage);
+    
 });
 
 //fucntion for validation images for the repeat
@@ -209,28 +211,35 @@ function repeatValidation () {
 let collectionArray = [];
 
 //finding value of selected option and get link, identify the collection box
-function getEmailAndLink() {
+function getEmailAndLink(marker) {
+    
+        
     let collection = emailsSelect.selectedOptions;
-if (collection.length === 0) {
-       const error = document.querySelector('span');
-    error.textContent = "Please select at least one email";
+    if (collection.length === 0) {
+           const error = document.querySelector('span');
+        error.textContent = "Please select at least one email";
+          }
+          else {
+            if(marker === true) {
+        for (let i = 0; i < collection.length; i++) {
+            console.log(collection[i].label);
+            const label = collection[i].label;
+            const image = getImage();
+            const imageLink = image.src;
+            let emailBox = document.querySelector(`[data-email = '${label}']`);
+            console.log(emailBox);
+            console.log(emailBox.nextElementSibling);
+            createImages(imageLink, emailBox);
+        }
       }
-      else {
-    for (let i = 0; i < collection.length; i++) {
-        console.log(collection[i].label);
-        const label = collection[i].label;
-        const image = getImage();
-        const imageLink = image.src;
-        let emailBox = document.querySelector(`[data-email = '${label}']`);
-        console.log(emailBox);
-        console.log(emailBox.nextElementSibling);
-        createImages(imageLink, emailBox);
     }
-  }
 }
 
 //adding links to the objects in the array
-function addLinks () {
+function addLinks (marker) {
+    console.log(marker);
+    if(marker === true) {
+        console.log(marker);
     const imageLink = getImage().src;
     let collection = emailsSelect.selectedOptions;
     for (let i = 0; i < collection.length; i++) {
@@ -241,8 +250,26 @@ function addLinks () {
     console.log(emailArray);
     emailArray[Object.keys(emailArray).length] = imageLink;
     }
+    }
 }
 
+//searching for the repeating links in the array
+function searchLinks () {
+    const imageLink = getImage().src;
+    let marker = false;
+    collectionArray.forEach(item => {
+        for(key in item) {
+            if (item[key] === imageLink) {
+                document.querySelector('span').textContent = "This image has been used";
+                break;
+            }
+            else {
+                marker = true;
+            }
+        }
+    });
+    return marker;
+}
 
 //adding images to the boxes
 function createImages (link, tag) {
