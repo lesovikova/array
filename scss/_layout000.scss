@@ -26,7 +26,7 @@ main {
     font-weight: 500;
 }
 .wrapper {
-    max-width: 350px;
+    max-width: 330px;
     margin: 0 auto;
 }
 
@@ -40,11 +40,11 @@ main {
     justify-content: center;
     margin: auto;
     width: 100%;
-    max-width: 350px;
+    max-width: 330px;
     height: 100%;
     @include e(container) {
         height: 700px;
-        width: 350px;
+        width: 330px;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -112,7 +112,7 @@ main {
     }
     @include e(form-container) {
         width: 100%;
-        max-width: 350px;
+        max-width: 330px;
     }
     @include e(form) {
         padding-top: 30px;

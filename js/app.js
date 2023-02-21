@@ -11,18 +11,19 @@ const emailsSelect = document.querySelector('#emails');
 const alertsPlace = document.querySelector('.select__after');
 const displayField = document.querySelector('.assign');
 
+const error = document.querySelector('span');
+
 let data;
 
 const getImage = () => document.querySelector('.select__image');
 
-// readyPic();
+//FETCHING THE FIRST IMAGE AND CHANGING ON CLICK
 
 //Creating first picture
 function readyPic (link) {
     const image = document.createElement('img');
     image.classList.add('select__image');
     image.src = link;
-    // image.src = fetchImage();
     container.prepend(image);
 
 }
@@ -54,9 +55,8 @@ changeButton.addEventListener('click', () => {
     }
 });
 
-//adding image to the container on click
 
-
+// VALIDATION OF THE EMAIL FIELD
 
 //field-not-empty algorythm 
 const isRequired = value => value === '' ? false : true;
@@ -88,7 +88,6 @@ const showError = (input, message) => {
     // get the form-field element
     const formField = input.parentElement;
     // show the error message
-    const error = formField.querySelector('span');
     error.textContent = message;
 };
 
@@ -97,11 +96,10 @@ const showSuccess = (input) => {
     // get the form-field element
     const formField = input.parentElement;
     // hide the error message
-    const error = formField.querySelector('span');
     error.textContent = '';
 }
 
-//final validation of form
+//final validation of form on click
 form.addEventListener('submit', function (e) {
     // prevent the form from submitting
     e.preventDefault();
@@ -123,6 +121,22 @@ form.addEventListener('submit', function (e) {
 });
 
 
+//EVERYTHING TO DO WITH MOVING EMAILS AROUND
+
+//add email name and dataset to the box
+function addEmailName(emailField) {
+    emailField.textContent = emailValue();
+    emailField.dataset.email = emailValue();
+}
+//Array for storying collections of images and email in an object
+let collectionArray = [];
+
+//returns email name
+function emailValue () {
+    return email.value;
+ }
+
+
 //adding emails to the list of emails
 function addEmailOption () {
     let emailOption = document.createElement('option');
@@ -130,105 +144,56 @@ function addEmailOption () {
     emailOption.value = emailValue();
     emailOption.setAttribute('selected', 'true');
     emailsSelect.add(emailOption);
-    
-   
         let collArr = new Object();
-        console.log((collArr));
         collArr.email = emailValue();
-        collectionArray.push(collArr);
-        
+        collectionArray.push(collArr);        
 }
 
 
-//collecting emails from emails select
+//collecting emails from emails select options (checked)
 function getEmails(callback) {
-    let collection = emailsSelect.selectedOptions;
-    console.log(collection.length);
- 
+    let collection = emailsSelect.selectedOptions; 
         callback(collection);
 }
 
 
 //the check to see that input email hasn't already been added
 function checkRepeatedEmail(collection) {
-    // let collection = emailsSelect.selectedOptions;
-    // console.log(collection);
-    // console.log(collection.length);
-    // for (let i = 0; i < collection.length; i++) {
-    //     console.log(collection[i].label);
-    //     if (collection.length === 0) {break;}
-    //     for (let j = 1; j < ++collection.length; j++) {
-    //         // console.log(collection[j].label);
-    //         if (collection[j].label === collection[i].label) {
-    //             document.querySelector('span').textContent = "This email already exists";
-    //         }
-    //         break;
-    //     }
-    // }
-    // if (collection.length === 0) {
-    //     const error = document.querySelector('span');
-    //  error.textContent = "Please select at least one email";
-    //    }
-    //    if (collection.length < 0) {
-
     for (let i = 0; i < collection.length++; i++) {
-        console.log(collection[i].label);
-       
-        // if (collection.length === 0) {break;}
-       
             if (collection[i].label === emailValue()) {
-                document.querySelector('span').textContent = "This email already exists";
+                error.textContent = "This email already exists";
              e.preventDefault();
              break; 
         }
     }
-// }
 }
 
 
-//Adding elements after clicking add button
-addButton.addEventListener('click', () => {
-    document.querySelector('span').textContent = "";
 
+
+//Adding elements on click of the add button
+addButton.addEventListener('click', () => {
+    error.textContent = "";
     getEmailAndLink(searchLinks());
     addLinks(searchLinks());
     fetchJSON(reachImage);
-    
 });
 
-//fucntion for validation images for the repeat
-function repeatValidation () {
-   const imageLink = getImage().src;
-   console.log(imageLink);
-   console.log(collectionArray);
-   for(key of collectionArray) {
-    console.log(key[i].value); 
-   }
+//EVERYTHING TO DO WITH IMAGES - DISPLAYING AND VALIDATING 
 
-}
-
-//Array for storying collections of images
-let collectionArray = [];
 
 //finding value of selected option and get link, identify the collection box
 function getEmailAndLink(marker) {
-    
-        
     let collection = emailsSelect.selectedOptions;
     if (collection.length === 0) {
-           const error = document.querySelector('span');
         error.textContent = "Please select at least one email";
           }
           else {
             if(marker === true) {
         for (let i = 0; i < collection.length; i++) {
-            console.log(collection[i].label);
             const label = collection[i].label;
-            const image = getImage();
-            const imageLink = image.src;
+            const imageLink = getImage().src;
             let emailBox = document.querySelector(`[data-email = '${label}']`);
-            console.log(emailBox);
-            console.log(emailBox.nextElementSibling);
             createImages(imageLink, emailBox);
         }
       }
@@ -237,17 +202,12 @@ function getEmailAndLink(marker) {
 
 //adding links to the objects in the array
 function addLinks (marker) {
-    console.log(marker);
     if(marker === true) {
-        console.log(marker);
     const imageLink = getImage().src;
     let collection = emailsSelect.selectedOptions;
     for (let i = 0; i < collection.length; i++) {
     const searchItem = collection[i].label;
-    console.log(searchItem);
     let emailArray = collectionArray.find( collectionArray => collectionArray.email === searchItem);
-    console.log(Object.keys(emailArray).length);
-    console.log(emailArray);
     emailArray[Object.keys(emailArray).length] = imageLink;
     }
     }
@@ -260,7 +220,7 @@ function searchLinks () {
     collectionArray.forEach(item => {
         for(key in item) {
             if (item[key] === imageLink) {
-                document.querySelector('span').textContent = "This image has been used";
+                error.textContent = "This image has been used";
                 break;
             }
             else {
@@ -300,29 +260,6 @@ function createBox () {
 }
 
 
-//add email name and dataset to the box
-function addEmailName(emailField) {
-    emailField.textContent = emailValue();
-    emailField.dataset.email = emailValue();
-}
-
-//returns email name
-function emailValue () {
-    return email.value;
- }
 
 
-
-// function checkSelect () {
-//     let selectOption = document.querySelector('select.option');
-//     console.log(selectOption);
-// }
-
-// checkSelect();
-
-
-// addButton.addEventListener('click', function(e) {
-//     e.preventDefault();
-
-// });
 
