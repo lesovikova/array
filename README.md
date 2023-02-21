@@ -1,8 +1,10 @@
 This is an exercise project
+
 The task
+
  Complete Deliverable
 
-Create a JavaScript project (use jQuery and/or other frameworks if you wish) which loads an image from either https://unsplash.com/documentation or https://picsum.photos/ and displays on a web page.
+Create a JavaScript project (use jQuery and/or other frameworks if you wish) which loads an image and displays on a web page.
 
 The image can then be assigned to an email address.
 
