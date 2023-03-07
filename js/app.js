@@ -1,3 +1,5 @@
+
+
 const container = document.querySelector('#container');
 
 
@@ -70,7 +72,7 @@ const isEmailValid = (email) => {
 
 //email validation fuction
 const checkEmail = () => {
-const inputemail = email.value.trim();
+const inputemail = email.value.toLowerCase().trim();
     let valid = false;
     if (!isRequired(inputemail)) {
         showError(email, 'Email cannot be blank.');
@@ -80,6 +82,7 @@ const inputemail = email.value.trim();
         showSuccess(email);
         valid = true;
     }
+    console.log(inputemail);
     return valid;
 }
 
@@ -113,7 +116,7 @@ form.addEventListener('submit', function (e) {
         alertsPlace.classList.remove('is-hidden');
         alertsPlace.textContent = 'Click Add button to add your pictures below';
         emailValue();
-        getEmails(checkRepeatedEmail);
+        checkRepeatedEmail(e);
         addEmailOption();
         createBox();
         e.target.reset();
@@ -133,7 +136,7 @@ let collectionArray = [];
 
 //returns email name
 function emailValue () {
-    return email.value;
+    return email.value.toLowerCase();
  }
 
 
@@ -151,22 +154,41 @@ function addEmailOption () {
 
 
 //collecting emails from emails select options (checked)
-function getEmails(callback) {
+function getEmails() {
     let collection = emailsSelect.selectedOptions; 
-        callback(collection);
+        return collection;
 }
 
+// function getEmails(callback) {
+//     let collection = emailsSelect.selectedOptions; 
+//         callback(collection);
+// }
 
 //the check to see that input email hasn't already been added
-function checkRepeatedEmail(collection) {
+function checkRepeatedEmail(e) {
+    let collection = getEmails();
     for (let i = 0; i < collection.length++; i++) {
+        
             if (collection[i].label === emailValue()) {
+                
+    console.log(e);
+                e.preventDefault();
                 error.textContent = "This email already exists";
-             e.preventDefault();
+                console.log("meh");
              break; 
         }
     }
 }
+
+// edEmail(collection, e) {
+//     for (let i = 0; i < collection.length++; i++) {
+//             if (collection[i].label === emailValue()) {
+//                 error.textContent = "This email already exists";
+//              e.preventDefault();
+//              break; 
+//         }
+//     }
+// }
 
 
 
