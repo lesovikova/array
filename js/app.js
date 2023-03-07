@@ -101,11 +101,14 @@ const showSuccess = (input) => {
     // hide the error message
     error.textContent = '';
 }
+//variable for the continuation of the function checkRepeatedEmail to addEmailOption
+let checkEmailExcistance = false;
 
 //final validation of form on click
 form.addEventListener('submit', function (e) {
     // prevent the form from submitting
     e.preventDefault();
+    
     // validate forms
     let isEmailValid = checkEmail();
     let isFormValid = isEmailValid ;
@@ -116,7 +119,7 @@ form.addEventListener('submit', function (e) {
         alertsPlace.classList.remove('is-hidden');
         alertsPlace.textContent = 'Click Add button to add your pictures below';
         emailValue();
-        checkRepeatedEmail(e);
+        checkRepeatedEmail();
         addEmailOption();
         createBox();
         e.target.reset();
@@ -142,6 +145,7 @@ function emailValue () {
 
 //adding emails to the list of emails
 function addEmailOption () {
+    if (checkEmailExcistance === false)   {
     let emailOption = document.createElement('option');
     emailOption.textContent = emailValue();
     emailOption.value = emailValue();
@@ -149,7 +153,8 @@ function addEmailOption () {
     emailsSelect.add(emailOption);
         let collArr = new Object();
         collArr.email = emailValue();
-        collectionArray.push(collArr);        
+        collectionArray.push(collArr);     
+    }
 }
 
 
@@ -159,38 +164,18 @@ function getEmails() {
         return collection;
 }
 
-// function getEmails(callback) {
-//     let collection = emailsSelect.selectedOptions; 
-//         callback(collection);
-// }
 
 //the check to see that input email hasn't already been added
-function checkRepeatedEmail(e) {
+function checkRepeatedEmail() {
     let collection = getEmails();
     for (let i = 0; i < collection.length++; i++) {
-        
             if (collection[i].label === emailValue()) {
-                
-    console.log(e);
-                e.preventDefault();
                 error.textContent = "This email already exists";
-                console.log("meh");
-             break; 
+                checkEmailExcistance = true;
+                return checkEmailExcistance;
         }
     }
 }
-
-// edEmail(collection, e) {
-//     for (let i = 0; i < collection.length++; i++) {
-//             if (collection[i].label === emailValue()) {
-//                 error.textContent = "This email already exists";
-//              e.preventDefault();
-//              break; 
-//         }
-//     }
-// }
-
-
 
 
 //Adding elements on click of the add button
